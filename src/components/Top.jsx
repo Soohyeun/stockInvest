@@ -3,7 +3,7 @@ import Link from "next/link";
 
 export function Top({ handleAboutScroll, handlePredictionScroll }) {
   return (
-    <header className="px-4 lg:px-6 h-14 flex items-center">
+    <header className="px-4 lg:px-6 h-20 flex items-center">
       <Link href="/" className="flex items-center justify-center">
         StockInvest
       </Link>

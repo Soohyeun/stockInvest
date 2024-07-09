@@ -2,8 +2,8 @@ import { LineChart } from "./ui/LineChart";
 
 export function PredictionResult() {
   return (
-    <div>
-      <h3 className="text-xl font-bold">Predictions for upcoming 10 days</h3>
+    <div className="mt-10">
+      <h3 className="text-xl font-bold text-center">Predictions for upcoming 10 days</h3>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6 w-full">
         <div className="bg-card rounded-lg p-6 flex flex-col gap-4">
           <p className="text-muted-foreground">

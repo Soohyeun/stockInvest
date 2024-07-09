@@ -3,6 +3,7 @@
 import { useRef } from "react";
 import { Top } from "@/components/Top";
 import { Prediction } from "@/components/prediction";
+import { About } from "@/components/about";
 
 export default function Home() {
   const aboutRef = useRef();
@@ -26,15 +27,17 @@ export default function Home() {
   };
 
   return (
-    <>
-    <Top handleAboutScroll={handleAboutScroll} handlePredictionScroll={handlePredictionScroll}></Top>
-    <div ref={aboutRef}>
-      About
+    <div className="mb-20">
+      <Top
+        handleAboutScroll={handleAboutScroll}
+        handlePredictionScroll={handlePredictionScroll}
+      ></Top>
+      <div ref={aboutRef}>
+        <About handlePredictionScroll={handlePredictionScroll}></About>
+      </div>
+      <div ref={predictionRef}>
+        <Prediction></Prediction>
+      </div>
     </div>
-    <div ref={predictionRef}>
-      <Prediction></Prediction>
-    </div>
-    
-    </>
   );
 }
