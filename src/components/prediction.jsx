@@ -5,12 +5,14 @@ import { PredictionResult } from "./predictionResult";
 import { AIAnalysis } from "./aiAnalysis";
 import { fetchPredictionResult } from "@/lib/apiRequest";
 import { Loading } from "./ui/loading";
+import { PredictionFail } from "./predictionFail";
 
 export function Prediction() {
   const [isLoading, setIsLoading] = useState(false);
   const [stockSymbol, setStockSymbol] = useState("");
   const [predictions, setPredictions] = useState([]);
   const [last10, setLast10] = useState({});
+  const [wrongSymbol, setWrongSymbol] = useState(false);
 
   const onChangeText = (e) => {
     setStockSymbol(e.target.value);
@@ -18,7 +20,12 @@ export function Prediction() {
 
   const onClickButton = async () => {
     setIsLoading(true);
-    await fetchPredictionResult(setPredictions, setLast10, stockSymbol);
+    await fetchPredictionResult(
+      setPredictions,
+      setLast10,
+      setWrongSymbol,
+      stockSymbol
+    );
     setIsLoading(false);
   };
 
@@ -49,13 +56,18 @@ export function Prediction() {
           </Button>
         </div>
         <div className="relative min-h-[10vh]">
-          {predictions.length != 0 && (
-            <div className={`relative ${isLoading ? "opacity-20" : ""}`}>
+          {predictions.length != 0 && !wrongSymbol && (
+            <div className={`${isLoading ? "opacity-20" : ""}`}>
               <PredictionResult
                 predictions={predictions}
                 last10={last10}
               ></PredictionResult>
               <AIAnalysis></AIAnalysis>
+            </div>
+          )}
+          {wrongSymbol && (
+            <div className={`${isLoading ? "opacity-20" : ""}`}>
+              <PredictionFail />{" "}
             </div>
           )}
           {isLoading && <Loading />}
