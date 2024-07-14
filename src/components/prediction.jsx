@@ -42,6 +42,7 @@ export function Prediction() {
           />
           <Button
             onClick={onClickButton}
+            disabled={isLoading}
             className="flex-shrink-0 bg-gray-500 text-white"
           >
             Search
