@@ -15,7 +15,6 @@ export function PredictionResult({ predictions, last10 }) {
   const increased = (avg_predictions >= avg_last10) ? true : false
 
   return (
-    predictions.length != 0 && (
       <div className="mt-10">
         <h3 className="text-2xl font-bold text-center">
           Predictions for upcoming 10 days
@@ -37,6 +36,5 @@ export function PredictionResult({ predictions, last10 }) {
           </div>
         </div>
       </div>
-    )
   );
 }

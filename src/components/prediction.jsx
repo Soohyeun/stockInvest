@@ -4,18 +4,22 @@ import { Button } from "@/components/ui/button";
 import { PredictionResult } from "./predictionResult";
 import { AIAnalysis } from "./aiAnalysis";
 import { fetchPredictionResult } from "@/lib/apiRequest";
+import { Loading } from "./ui/loading";
 
 export function Prediction() {
+  const [isLoading, setIsLoading] = useState(false);
   const [stockSymbol, setStockSymbol] = useState("");
   const [predictions, setPredictions] = useState([]);
-  const [last10, setLast10] = useState({})
+  const [last10, setLast10] = useState({});
 
   const onChangeText = (e) => {
     setStockSymbol(e.target.value);
   };
 
-  const onClickButton = () => {
-    fetchPredictionResult(setPredictions, setLast10, stockSymbol);
+  const onClickButton = async () => {
+    setIsLoading(true);
+    await fetchPredictionResult(setPredictions, setLast10, stockSymbol);
+    setIsLoading(false);
   };
 
   return (
@@ -27,7 +31,8 @@ export function Prediction() {
         <p className="max-w-[900px] text-gray-500 text-center md:text-l/relaxed lg:text-base/relaxed xl:text-l/relaxed">
           Enter a stock symbol and click the search button. The predictive model
           will be trained in a minute (sometimes it can take longer), and will
-          show you the 10-day predictions. Moreover, AI will give you some insight of the stock!
+          show you the 10-day predictions. Moreover, AI will give you some
+          insight of the stock!
         </p>
         <div className="w-full mt-10 max-w-md flex items-center space-x-2">
           <Input
@@ -42,9 +47,17 @@ export function Prediction() {
             Search
           </Button>
         </div>
-        <div>
-          <PredictionResult predictions = {predictions} last10={last10}></PredictionResult>
-          <AIAnalysis></AIAnalysis>
+        <div className="relative min-h-[10vh]">
+          {predictions.length != 0 && (
+            <div className={`relative ${isLoading ? "opacity-20" : ""}`}>
+              <PredictionResult
+                predictions={predictions}
+                last10={last10}
+              ></PredictionResult>
+              <AIAnalysis></AIAnalysis>
+            </div>
+          )}
+          {isLoading && <Loading />}
         </div>
       </div>
     </div>
