@@ -8,13 +8,14 @@ import { fetchPredictionResult } from "@/lib/apiRequest";
 export function Prediction() {
   const [stockSymbol, setStockSymbol] = useState("");
   const [predictions, setPredictions] = useState([]);
+  const [last10, setLast10] = useState({})
 
   const onChangeText = (e) => {
     setStockSymbol(e.target.value);
   };
 
   const onClickButton = () => {
-    fetchPredictionResult(setPredictions, stockSymbol);
+    fetchPredictionResult(setPredictions, setLast10, stockSymbol);
   };
 
   return (
@@ -42,7 +43,7 @@ export function Prediction() {
           </Button>
         </div>
         <div>
-          <PredictionResult></PredictionResult>
+          <PredictionResult predictions = {predictions} last10={last10}></PredictionResult>
           <AIAnalysis></AIAnalysis>
         </div>
       </div>
