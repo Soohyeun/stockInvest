@@ -1,12 +1,18 @@
 "use client";
 import Link from "next/link";
+import Image from "next/image";
 
 export function Top({ handleAboutScroll, handlePredictionScroll }) {
   return (
     <header className="px-4 lg:px-6 h-20 flex items-center">
-      <Link href="/" className="flex items-center justify-center">
-        StockInvest
-      </Link>
+      <Image
+        href="/"
+        src="/logo.png"
+        width={130}
+        height={50}
+        alt="Logo"
+        className="flex items-center justify-center"
+      />
       <nav className="ml-auto flex gap-4 sm:gap-6">
         <button
           onClick={handleAboutScroll}
