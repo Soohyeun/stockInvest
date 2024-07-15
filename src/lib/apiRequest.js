@@ -38,7 +38,7 @@ export const fetchPredictionResult = async (
  * @param {Object} setAiAnswer - useState that changes AI answer
  */
 export const fetchAIAnswer = async (stockSimbol, setAiAnswer) => {
-  const url = `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}${process.env.NEXT_PUBLIC_OPENAI_END_POINT}${stockSimbol}`;
+  const url = `${process.env.NEXT_PUBLIC_OPENAI_END_POINT}${stockSimbol}`;
   // console.log(url);
   try {
     const response = await fetch(url);
