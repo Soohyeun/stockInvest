@@ -9,7 +9,9 @@ export default function Home() {
   const aboutRef = useRef();
   const predictionRef = useRef();
 
-  // Handling Scroll
+  /**
+   * Scroll to component About
+   */
   const handleAboutScroll = () => {
     window.scrollTo({
       top: aboutRef.current.offsetTop,
@@ -18,6 +20,9 @@ export default function Home() {
     });
   };
 
+  /**
+   * Scroll to component Prediction
+   */
   const handlePredictionScroll = () => {
     window.scrollTo({
       top: predictionRef.current.offsetTop,

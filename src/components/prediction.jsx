@@ -1,4 +1,4 @@
-'use client';
+"use client";
 
 import { useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -17,10 +17,16 @@ export function Prediction() {
   const [wrongSymbol, setWrongSymbol] = useState(false);
   const [aiAnswer, setAiAnswer] = useState("");
 
+  /**
+   * Get user input
+   */
   const onChangeText = (e) => {
     setStockSymbol(e.target.value);
   };
 
+  /**
+   * Fetch predictions and ai advice when user clicks search button
+   */
   const onClickButton = async () => {
     setIsLoading(true);
     await fetchPredictionResult(
