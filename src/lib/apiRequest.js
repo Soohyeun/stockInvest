@@ -28,3 +28,23 @@ export const fetchPredictionResult = async (
     console.error("Error fetching prediction.", error);
   }
 };
+
+/**
+ * Fetch prediction result using API.
+ * @param {string} stockSimbol - symbol of stock that will be predicted
+ */
+export const fetchAIAnswer = async (stockSimbol, setAiAnswer) => {
+  const url = `${process.env.NEXT_PUBLIC_INTERNAL_API_URL}${process.env.NEXT_PUBLIC_OPENAI_END_POINT}${stockSimbol}`;
+  console.log(url);
+  try {
+    const response = await fetch(url);
+    if (!response.ok) {
+      throw new Error("Fail to fetch AI Answer.");
+    }
+    const res = await response.json();
+    console.log(res);
+    setAiAnswer(res.content);
+  } catch (error) {
+    console.error("Error fetching AI Answer..", error);
+  }
+};

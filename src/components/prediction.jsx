@@ -1,9 +1,11 @@
-import { useEffect, useState } from "react";
+'use client';
+
+import { useState } from "react";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PredictionResult } from "./predictionResult";
 import { AIAnalysis } from "./aiAnalysis";
-import { fetchPredictionResult } from "@/lib/apiRequest";
+import { fetchPredictionResult, fetchAIAnswer } from "@/lib/apiRequest";
 import { Loading } from "./ui/loading";
 import { PredictionFail } from "./predictionFail";
 
@@ -13,6 +15,7 @@ export function Prediction() {
   const [predictions, setPredictions] = useState([]);
   const [last10, setLast10] = useState({});
   const [wrongSymbol, setWrongSymbol] = useState(false);
+  const [aiAnswer, setAiAnswer] = useState("");
 
   const onChangeText = (e) => {
     setStockSymbol(e.target.value);
@@ -27,6 +30,8 @@ export function Prediction() {
       stockSymbol
     );
     setIsLoading(false);
+    setAiAnswer(""); // Reset AI result first
+    await fetchAIAnswer(stockSymbol, setAiAnswer);
   };
 
   return (
@@ -62,7 +67,7 @@ export function Prediction() {
                 predictions={predictions}
                 last10={last10}
               ></PredictionResult>
-              <AIAnalysis></AIAnalysis>
+              <AIAnalysis aiAnswer={aiAnswer}></AIAnalysis>
             </div>
           )}
           {wrongSymbol && (
