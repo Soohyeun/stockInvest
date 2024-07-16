@@ -1,43 +1,67 @@
 "use client";
 
 import { useState } from "react";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { PredictionResult } from "./predictionResult";
 import { AIAnalysis } from "./aiAnalysis";
 import { fetchPredictionResult, fetchAIAnswer } from "@/lib/apiRequest";
 import { Loading } from "./ui/loading";
 import { PredictionFail } from "./predictionFail";
+import { AutoCompleteInput } from "./ui/autoCompleteInput";
+import nasdaqData from "../lib/nasdaq.json";
 
 export function Prediction() {
   const [isLoading, setIsLoading] = useState(false);
-  const [stockSymbol, setStockSymbol] = useState("");
+  const [stock, setStock] = useState("");
   const [predictions, setPredictions] = useState([]);
   const [last10, setLast10] = useState({});
   const [wrongSymbol, setWrongSymbol] = useState(false);
   const [aiAnswer, setAiAnswer] = useState("");
 
   /**
-   * Get user input
+   * Get stock symbol by name user input
    */
-  const onChangeText = (e) => {
-    setStockSymbol(e.target.value);
-  };
+  function getSymbolByName() {
+    let inputStockSymbol = null;
+    if (typeof stock === "object") {
+      inputStockSymbol = stock.Symbol;
+    } else if (typeof stock === "string") {
+      const foundSymbol = nasdaqData.find(
+        (data) =>
+          data.Name.toLowerCase() === stock.toLowerCase() ||
+          data.Symbol.toLowerCase() === stock.toLowerCase()
+      );
+      inputStockSymbol = foundSymbol ? foundSymbol.Symbol : null;
+    }
+    return inputStockSymbol;
+  }
 
   /**
    * Fetch predictions and ai advice when user clicks search button
    */
   const onClickButton = async () => {
-    setIsLoading(true);
-    await fetchPredictionResult(
-      setPredictions,
-      setLast10,
-      setWrongSymbol,
-      stockSymbol
-    );
-    setIsLoading(false);
-    setAiAnswer(""); // Reset AI result first
-    await fetchAIAnswer(stockSymbol, setAiAnswer);
+    const symbol = getSymbolByName();
+    if (symbol) {
+      try {
+        setIsLoading(true);
+
+        const predictionResultPromise = fetchPredictionResult(
+          setPredictions,
+          setLast10,
+          setWrongSymbol,
+          symbol
+        );
+        const aiAnswerPromise = fetchAIAnswer(symbol, setAiAnswer);
+
+        await Promise.all([predictionResultPromise, aiAnswerPromise]);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      } finally {
+        setIsLoading(false);
+      }
+    } else {
+      setWrongSymbol(true);
+    }
   };
 
   return (
@@ -53,11 +77,7 @@ export function Prediction() {
           insight of the stock!
         </p>
         <div className="w-full mt-10 max-w-md flex items-center space-x-2">
-          <Input
-            placeholder="Enter stock Symbol (eg. NVDA)"
-            onChange={onChangeText}
-            className="w-full rounded-full py-3 px-4 text-center text-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
-          />
+          <AutoCompleteInput inputValue={stock} onChangeFunction={setStock} />
           <Button
             onClick={onClickButton}
             disabled={isLoading}
