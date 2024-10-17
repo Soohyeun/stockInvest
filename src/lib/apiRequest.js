@@ -11,10 +11,7 @@ export const fetchPredictionResult = async (
   setWrongSymbol,
   stockSimbol
 ) => {
-  const url = `${process.env.NEXT_PUBLIC_PREDICTION_API_URL}${[
-    process.env.NEXT_PUBLIC_PREDICTION_API_END_POINT,
-  ]}${stockSimbol}`;
-  // console.log(url);
+  const url = `${process.env.NEXT_PUBLIC_PREDICTION_API_URL}${process.env.NEXT_PUBLIC_PREDICTION_API_END_POINT}?${process.env.NEXT_PUBLIC_PREDICTION_API_KEY}&stockname=${stockSimbol}`;
   try {
     const response = await fetch(url);
     if (!response.ok) {
